@@ -9,19 +9,19 @@ oneb=$(cat /etc/passwd | egrep 'rohit|kohli|hardik')
 onec=$(cat /etc/shadow | egrep 'rohit|kohli|hardik')
 logfile="Assessment_out_$(date +%d-%m-%Y_%H%M%S)"
 
-if [[! -z $onea] && ["$onea" == *"cricket"*]]; then 
+if [ ! [ -z $onea ] -a [ "$onea" == *"cricket"* ]]; then 
     echo "1a) PASSED (cricket group exists)" >> 
 else
     echo "1a) FAILED (cricket group does not exists)"
 fi
 
-if [[ ! -z $oneb ] && [ "$onea" == *"rohit"* ] && [ "$oneb" == *"kohli"* ] && [ "$oneb" == *"hardik"* ] ]; then 
+if [ [ ! -z $oneb ] -a [ "$onea" == *"rohit"* ] -a [ "$oneb" == *"kohli"* ] -a [ "$oneb" == *"hardik"* ] ]; then 
     echo "1b) PASSED (User rohit,kohli,hardik exists)"
 else
     echo "1b) FAILED (User rohit,kohli,hardik does not exists)"
 fi
 
-if [[ ! -z $onec ] && [ "$onec" == *"rohit"* ] && [ "$onec" == *"kohli"* ] && [ "$onec" == *"hardik"* ] ]; then 
+if [ [ ! -z $onec ] -a [ "$onec" == *"rohit"* ] -a [ "$onec" == *"kohli"* ] -a [ "$onec" == *"hardik"* ] ]; then 
     echo "1b) PASSED (User rohit,kohli,hardik exists in shadow file)"
 else
     echo "1b) FAILED (User rohit,kohli,hardik does not exists in shadow file)"
