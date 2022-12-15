@@ -1,7 +1,8 @@
 #!/bin/bash
 
-# To run this file 
+# To run this script use any one of the following method 
 # bash <(curl -s https://raw.githubusercontent.com/saranraj-git/Saran_OSE_Labs/main/RHCSA_asmt/RHCSA_Saran.sh)
+#   ( or )
 # curl -s https://raw.githubusercontent.com/saranraj-git/Saran_OSE_Labs/main/RHCSA_asmt/RHCSA_Saran.sh | bash
 
 onea=$(cat /etc/group | grep cricket)
