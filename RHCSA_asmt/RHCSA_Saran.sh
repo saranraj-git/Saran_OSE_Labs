@@ -9,7 +9,7 @@ oneb=$(cat /etc/passwd | egrep 'rohit|kohli|hardik')
 onec=$(cat /etc/shadow | egrep 'rohit|kohli|hardik')
 logfile="Assessment_out_$(date +%d-%m-%Y_%H%M%S)"
 
-if [[ ! -z $onea ] && [ "$onea" == *"cricket"* ]]; then 
+if [[! -z $onea] && ["$onea" == *"cricket"*]]; then 
     echo "1a) PASSED (cricket group exists)" >> 
 else
     echo "1a) FAILED (cricket group does not exists)"
