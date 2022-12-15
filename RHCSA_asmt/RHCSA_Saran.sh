@@ -1,4 +1,9 @@
 #!/bin/bash
+
+# To run this file 
+# bash <(curl -s https://raw.githubusercontent.com/saranraj-git/Saran_OSE_Labs/main/RHCSA_asmt/RHCSA_Saran.sh)
+# curl -s https://raw.githubusercontent.com/saranraj-git/Saran_OSE_Labs/main/RHCSA_asmt/RHCSA_Saran.sh | bash
+
 onea=$(cat /etc/group | grep cricket)
 oneb=$(cat /etc/passwd | egrep 'rohit|kohli|hardik')
 onec=$(cat /etc/shadow | egrep 'rohit|kohli|hardik')
