@@ -9,13 +9,13 @@ oneb=$(cat /etc/passwd | egrep 'rohit|kohli|hardik')
 onec=$(cat /etc/shadow | egrep 'rohit|kohli|hardik')
 logfile="Assessment_out_$(date +%d-%m-%Y_%H%M%S)"
 
-if [ ! [ -z $onea ] -a [ "$onea" == *"cricket"* ]]; then 
+if [ ! [ -z $onea ] -a [ "$onea" == *"cricket"* ] ]; then
     echo "1a) PASSED (cricket group exists)"
 else
     echo "1a) FAILED (cricket group does not exists)"
 fi
 
-if [ [ ! -z $oneb ] -a [ "$onea" == *"rohit"* ] -a [ "$oneb" == *"kohli"* ] -a [ "$oneb" == *"hardik"* ] ]; then 
+if [ [ ! -z $oneb ] -a [ "$onea" == *"rohit"* ] -a [ "$oneb" == *"kohli"* ] -a [ "$oneb" == *"hardik"* ] ]; then
     echo "1b) PASSED (User rohit,kohli,hardik exists)"
 else
     echo "1b) FAILED (User rohit,kohli,hardik does not exists)"
