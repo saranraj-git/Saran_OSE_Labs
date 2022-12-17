@@ -60,8 +60,17 @@ function four(){
 }
 
 function five(){
-    userdefumask=$(su -c 'umask' -l 'userdef')
-    dravidumask=$(su -c 'umask' -l 'dravid')
+    echo -e "\nValidating Question 5: \n"
+    # userdefumask=$(su -c 'umask' -l 'userdef')
+    # dravidumask=$(su -c 'umask' -l 'dravid')
+    # udefmaskcheck=$(grep 'umask' /home/userdef/.bash_profile)
+    [[ -f /home/userdef/file2 ]] && rm -rf /home/userdef/file2
+    [[ -d /home/dravid/dir3 ]] && rm -rf /home/dravid/dir3
+    filecheck=$(runuser -l userdef -c 'source /home/userdef/.bash_profile; touch /home/userdef/file2; stat -L -c "%a" /home/userdef/file2')
+    dircheck=$(runuser -l dravid -c 'source /home/dravid/.bash_profile; mkdir /home/dravid/dir3; stat -L -c "%a" /home/dravid/dir3')
+    [[ $filecheck -eq 440 ]] && echo -e "5) ${GREEN}PASSED${NC} - newly created file have –r--r----- permissions" || echo -e "5) ${RED}FAILED${NC} - newly created file does not have –r--r----- permissions"
+    [[ $dircheck -eq 550 ]] && echo -e "5) ${GREEN}PASSED${NC} - newly created dir have dr-xr-x--- permissions" || echo -e "5) ${RED}FAILED${NC} - newly created dir does not have dr-xr-x--- permissions"
+    
 }
 
 echo -e "\n*** ${BBlue}OSE LABS - RHCSA Course - Assessment 1 Validation${NC} ***\n"
@@ -69,4 +78,4 @@ one
 two
 three
 four
-
+five
