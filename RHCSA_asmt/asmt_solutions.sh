@@ -13,7 +13,7 @@ sudo useradd hardik
 
 echo "rohit:Secret123" >> pwdfile
 echo "kohli:Secret123" >> pwdfile
-echo "hardik:Secret123" >> pwdfile
+#echo "hardik:Secret123" >> pwdfile
 
 sudo chpasswd < pwdfile
 rm -rf pwdfile

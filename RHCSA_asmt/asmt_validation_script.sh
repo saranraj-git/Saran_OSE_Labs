@@ -7,27 +7,27 @@
 #    or
 # curl -s https://raw.githubusercontent.com/saranraj-git/Saran_OSE_Labs/main/RHCSA_asmt/asmt_validation_script.sh | bash
 
-onea=$(cat /etc/group | grep cricket)
-onebc=$(cat /etc/passwd | egrep 'rohit|kohli')
-oned=$(cat /etc/passwd | grep 'hardik') 
 RED='\033[0;31m'
 GREEN='\033[0;32m'
 NC='\033[0m'
 BBlue='\033[1;34m'
-logfile="Assessment_out_$(date +%d-%m-%Y_%H%M%S)"
+# logfile="Assessment_out_$(date +%d-%m-%Y_%H%M%S)"
 
 function one(){
+    onea=$(cat /etc/group | grep cricket)
+    onebc=$(cat /etc/passwd | egrep 'rohit|kohli')
+    oned=$(cat /etc/passwd | grep 'hardik') 
     echo -e "Validating Question 1: \n"
     [[ ! -z ${onea} ]] && [[ ${onea} == *"cricket"* ]] && echo -e "1a) ${GREEN}PASSED${NC} (cricket group exists)" || echo -e "1a) ${RED}FAILED${NC} (cricket group does not exists)"
-    [[ ! -z ${onebc} ]] && [[ ${onea} == *"rohit"* ]] && echo -e "1a) ${GREEN}PASSED${NC} (User rohit belongs to the secondary group cricket)" || echo -e "1b) ${RED}FAILED${NC} (User rohit does not belongs to the secondary group cricket)"
+    [[ ! -z ${onebc} ]] && [[ ${onea} == *"rohit"* ]] && echo -e "1b) ${GREEN}PASSED${NC} (User rohit belongs to the secondary group cricket)" || echo -e "1b) ${RED}FAILED${NC} (User rohit does not belongs to the secondary group cricket)"
     [[ ! -z ${onebc} ]] && [[ ${onea} == *"kohli"* ]] && echo -e "1c) ${GREEN}PASSED${NC} (User kohli belongs to the secondary group cricket)" || echo -e "1c) ${RED}FAILED${NC} (User kohli does not belongs to the secondary group cricket)"
     [[ ! -z ${oned} ]] && [[ ${oned} == *"nologin"* ]] && [[ ${onea} != *"hardik"* ]] && echo -e "1d) ${GREEN}PASSED${NC} (User hardik does not interactive shell access and non-member of cricket group)" || echo "1d) ${RED}FAILED${NC} (User hardik does not exists or the user does have shell acces or user might be member of cricket)"
     echo "Secret123" | /bin/su --command true - "rohit" 2>/dev/null
     [[ $? -eq 0 ]] && echo -e "1e) ${GREEN}PASSED${NC} (rohit password set to Secret123)" || echo -e "1e) ${RED}FAILED${NC} (rohit password set incorrect)"
     echo "Secret123" | /bin/su --command true - "kohli" 2>/dev/null
     [[ $? -eq 0 ]] && echo -e "1e) ${GREEN}PASSED${NC} (kohli password set to Secret123)" || echo -e "1e) ${RED}FAILED${NC} (kohli password set incorrect)"
-    echo "Secret123" | /bin/su --command true - "hardik" 2>/dev/null
-    [[ $? -eq 0 ]] && echo -e "1e) ${GREEN}PASSED${NC} (hardik password set to Secret123)" || echo -e "1e) ${RED}FAILED${NC} (hardik password set incorrect)"
+    # echo "Secret123" | /bin/su --command true - "hardik" 2>/dev/null
+    # [[ $? -eq 0 ]] && echo -e "1e) ${GREEN}PASSED${NC} (hardik password set to Secret123)" || echo -e "1e) ${RED}FAILED${NC} (hardik password set incorrect)"
 }
 
 function two(){
