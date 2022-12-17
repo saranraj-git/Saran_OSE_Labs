@@ -3,9 +3,7 @@
 # Author: SARANRAJ V
 
 # To run this file 
-# bash <(curl -s https://raw.githubusercontent.com/saranraj-git/Saran_OSE_Labs/main/RHCSA_asmt/asmt_validation_script.sh)
-#    or
-# curl -s https://raw.githubusercontent.com/saranraj-git/Saran_OSE_Labs/main/RHCSA_asmt/asmt_validation_script.sh | bash
+# curl -s https://raw.githubusercontent.com/saranraj-git/Saran_OSE_Labs/main/RHCSA_asmt/asmt_solutions.sh | bash
 
 # 1
 sudo groupadd cricket
