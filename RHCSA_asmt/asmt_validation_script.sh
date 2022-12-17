@@ -1,8 +1,11 @@
 #!/bin/bash
 
+# Author: SARANRAJ V
+
 # To run this file 
-# bash <(curl -s https://raw.githubusercontent.com/saranraj-git/Saran_OSE_Labs/main/RHCSA_asmt/RHCSA_Saran.sh)
-# curl -s https://raw.githubusercontent.com/saranraj-git/Saran_OSE_Labs/main/RHCSA_asmt/RHCSA_Saran.sh | bash
+# bash <(curl -s https://raw.githubusercontent.com/saranraj-git/Saran_OSE_Labs/main/RHCSA_asmt/asmt_validation_script.sh)
+#    or
+# curl -s https://raw.githubusercontent.com/saranraj-git/Saran_OSE_Labs/main/RHCSA_asmt/asmt_validation_script.sh | bash
 
 onea=$(cat /etc/group | grep cricket)
 onebc=$(cat /etc/passwd | egrep 'rohit|kohli')
