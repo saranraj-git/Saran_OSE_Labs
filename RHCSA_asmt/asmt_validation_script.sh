@@ -26,10 +26,12 @@ function one(){
     [[ $? -eq 0 ]] && echo -e "1e) ${GREEN}PASSED${NC} (rohit password set to Secret123)" || echo -e "1e) ${RED}FAILED${NC} (rohit password set incorrect)"
     echo "Secret123" | /bin/su --command true - "kohli" 2>/dev/null
     [[ $? -eq 0 ]] && echo -e "1e) ${GREEN}PASSED${NC} (kohli password set to Secret123)" || echo -e "1e) ${RED}FAILED${NC} (kohli password set incorrect)"
-    sudo usermod hardik -s /bin/bash
+    hardikshell=$(grep 'hardik' /etc/passwd | cut -d: -f7)
+    [[ $hardikshell == *"nologin"* ]] && sudo usermod hardik -s /bin/bash
     echo "Secret123" | /bin/su --command true - "hardik" 2>/dev/null
     [[ $? -eq 0 ]] && echo -e "1e) ${GREEN}PASSED${NC} (hardik password set to Secret123)" || echo -e "1e) ${RED}FAILED${NC} (hardik password set incorrect)"
-    sudo usermod hardik -s /sbin/nologin
+    hardikshell=$(grep 'hardik' /etc/passwd | cut -d: -f7)
+    [[ $hardikshell == *"bash"* ]] && sudo usermod hardik -s /sbin/nologin
 }
 
 function two(){
