@@ -46,7 +46,7 @@ function three(){
     [[ -d '/open/source' ]] && echo -e "3) ${GREEN}Directory exists${NC} /open/source" || echo -e "3) ${RED}Directory not exists${NC} /open/source"
     [[ $(sudo stat -L -c "%U" '/open/source') == "jadeja" ]] && echo -e "3a) ${GREEN}PASSED${NC} (/open/source owned by jadeja)" || echo -e "3a) ${RED}FAILED${NC} (/open/source NOT owned by jadeja)"
     [[ $(sudo stat -L -c "%G" '/open/source') == "cricket" ]] && echo -e "3b) ${GREEN}PASSED${NC} (/open/source owned by group cricket)" || echo -e "3b) ${RED}FAILED${NC} (/open/source NOT owned by group cricket)"
-    [[ $(sudo stat -L -c "%a" '/open/source') -eq 70 ]] && echo -e "3c) ${GREEN}PASSED${NC} (/open/source - accessible only to cricket group members)" || echo -e "3c) ${RED}FAILED${NC} (/open/source - accessible to users who are not member of cricket group)"
+    [[ $(sudo stat -L -c "%a" '/open/source') -eq 2070 ]] && echo -e "3c) ${GREEN}PASSED${NC} (/open/source - accessible only to cricket group members)" || echo -e "3c) ${RED}FAILED${NC} (/open/source - accessible to users who are not member of cricket group)"
     sudo touch /open/source/threetest
     [[ $(sudo stat -L -c "%G" '/open/source/threetest') == "cricket" ]] && echo -e "3d) ${GREEN}PASSED${NC} (new files in /open/source owned by group cricket)" || echo -e "3d) ${RED}FAILED${NC} (new files in /open/source NOT owned by group cricket)"
     sudo rm -rf /open/source/threetest
