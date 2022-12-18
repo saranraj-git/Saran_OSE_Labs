@@ -50,6 +50,6 @@ a) It should contain only the usernames and not any other details
  Please note that, this script should be executed by any location on the server without mentioning the absolute path.
 
 10. Write a script to have an output file result.words on /opt path. When you execute the words.sh file (from any 
-location), the script should collect the content as the words which starts with "z" and "Z" on the file 
+location), the script should collect the content as the words which starts with "w" or "W" on the file 
 /usr/share/dict/linux.words.  >>
 Note: When we open the output file /opt/result.words, it should have the contents either starts with "w" or "W".

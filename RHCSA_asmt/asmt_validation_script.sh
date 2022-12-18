@@ -156,7 +156,7 @@ function nine(){
             invalidcontent="false"
             display.sh > /tmp/nine
             if [[ $(cat /tmp/nine | wc -l) -eq 10 ]]; then
-                echo "9) ${GREEN}PASSED${NC} display.sh prints exactly 10 lines"
+                echo -e "9) ${GREEN}PASSED${NC} display.sh prints exactly 10 lines"
                 while read line; do
                     if [[ $line != "Good Learning Linux" ]]; then
                         invalidcontent="true"
@@ -165,7 +165,7 @@ function nine(){
                 done</tmp/nine
                 [[ ${invalidcontent} == "false" ]] && echo "9) ${GREEN}PASSED${NC} display.sh printing 'Good Learning Linux' 10 times" || echo "9) ${RED}FAILED${NC} display.sh not printing 'Good Learning Linux' 10 times"
             else
-                echo "9) ${RED}FAILED${NC} display.sh not printing 'Good Learning Linux' 10 times"  
+                echo -e "9) ${RED}FAILED${NC} display.sh not printing 'Good Learning Linux' 10 times"  
             fi
         else 
             echo -e "9) ${RED}FAILED${NC} display.sh cannot be executed from any path in this machine"
@@ -178,7 +178,7 @@ function nine(){
 function ten(){
     echo -e "\nValidating Question 10: \n"
     [[ -f /opt/result.words ]] && sudo rm -rf /opt/result.words
-    runuser -l rohit -c 'cd /home/rohit/; words.sh' 
+    runuser -l root -c 'cd /tmp/; words.sh' 
     if [[ $? -eq 0 ]]; then
         echo -e "10) ${GREEN}PASSED${NC} - words.sh executed successfully from any path"
         if [[ -f /opt/result.words ]]; then
