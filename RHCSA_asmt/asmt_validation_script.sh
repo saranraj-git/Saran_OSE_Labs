@@ -15,35 +15,39 @@ totalscore=0
 # logfile="Assessment_out_$(date +%d-%m-%Y_%H%M%S)"
 
 function one(){
+    onescore=1
     onea=$(cat /etc/group | grep cricket)
     onebc=$(cat /etc/passwd | egrep 'rohit|kohli')
     oned=$(cat /etc/passwd | grep 'hardik') 
     echo -e "Validating Question 1: \n"
-    [[ ! -z ${onea} ]] && [[ ${onea} == *"cricket"* ]] && echo -e "1a) ${GREEN}PASSED${NC} (cricket group exists)" || echo -e "1a) ${RED}FAILED${NC} (cricket group does not exists)"
-    [[ ! -z ${onebc} ]] && [[ ${onea} == *"rohit"* ]] && echo -e "1b) ${GREEN}PASSED${NC} (User rohit belongs to the secondary group cricket)" || echo -e "1b) ${RED}FAILED${NC} (User rohit does not belongs to the secondary group cricket)"
-    [[ ! -z ${onebc} ]] && [[ ${onea} == *"kohli"* ]] && echo -e "1c) ${GREEN}PASSED${NC} (User kohli belongs to the secondary group cricket)" || echo -e "1c) ${RED}FAILED${NC} (User kohli does not belongs to the secondary group cricket)"
-    [[ ! -z ${oned} ]] && [[ ${oned} == *"nologin"* ]] && [[ ${onea} != *"hardik"* ]] && echo -e "1d) ${GREEN}PASSED${NC} (User hardik does not interactive shell access and non-member of cricket group)" || echo "1d) ${RED}FAILED${NC} (User hardik does not exists or the user does have shell acces or user might be member of cricket)"
+    [[ ! -z ${onea} ]] && [[ ${onea} == *"cricket"* ]] && echo -e "1a) ${GREEN}PASSED${NC} (cricket group exists)" || echo -e "1a) ${RED}FAILED${NC} (cricket group does not exists)"; onescore=0
+    [[ ! -z ${onebc} ]] && [[ ${onea} == *"rohit"* ]] && echo -e "1b) ${GREEN}PASSED${NC} (User rohit belongs to the secondary group cricket)" || echo -e "1b) ${RED}FAILED${NC} (User rohit does not belongs to the secondary group cricket)"; onescore=0
+    [[ ! -z ${onebc} ]] && [[ ${onea} == *"kohli"* ]] && echo -e "1c) ${GREEN}PASSED${NC} (User kohli belongs to the secondary group cricket)" || echo -e "1c) ${RED}FAILED${NC} (User kohli does not belongs to the secondary group cricket)"; onescore=0
+    [[ ! -z ${oned} ]] && [[ ${oned} == *"nologin"* ]] && [[ ${onea} != *"hardik"* ]] && echo -e "1d) ${GREEN}PASSED${NC} (User hardik does not interactive shell access and non-member of cricket group)" || echo "1d) ${RED}FAILED${NC} (User hardik does not exists or the user does have shell acces or user might be member of cricket)"; onescore=0
     echo "Secret123" | /bin/su --command true - "rohit" 2>/dev/null
-    [[ $? -eq 0 ]] && echo -e "1e) ${GREEN}PASSED${NC} (rohit password set to Secret123)" || echo -e "1e) ${RED}FAILED${NC} (rohit password set incorrect)"
+    [[ $? -eq 0 ]] && echo -e "1e) ${GREEN}PASSED${NC} (rohit password set to Secret123)" || echo -e "1e) ${RED}FAILED${NC} (rohit password set incorrect)"; onescore=0
     echo "Secret123" | /bin/su --command true - "kohli" 2>/dev/null
-    [[ $? -eq 0 ]] && echo -e "1e) ${GREEN}PASSED${NC} (kohli password set to Secret123)" || echo -e "1e) ${RED}FAILED${NC} (kohli password set incorrect)"
+    [[ $? -eq 0 ]] && echo -e "1e) ${GREEN}PASSED${NC} (kohli password set to Secret123)" || echo -e "1e) ${RED}FAILED${NC} (kohli password set incorrect)"; onescore=0
     hardikshell=$(grep 'hardik' /etc/passwd | cut -d: -f7)
     [[ $hardikshell == *"nologin"* ]] && sudo usermod hardik -s /bin/bash
     echo "Secret123" | /bin/su --command true - "hardik" 2>/dev/null
-    [[ $? -eq 0 ]] && echo -e "1e) ${GREEN}PASSED${NC} (hardik password set to Secret123)" || echo -e "1e) ${RED}FAILED${NC} (hardik password set incorrect)"
+    [[ $? -eq 0 ]] && echo -e "1e) ${GREEN}PASSED${NC} (hardik password set to Secret123)" || echo -e "1e) ${RED}FAILED${NC} (hardik password set incorrect)"; onescore=0
     hardikshell=$(grep 'hardik' /etc/passwd | cut -d: -f7)
     [[ $hardikshell == *"bash"* ]] && sudo usermod hardik -s /sbin/nologin
+    totalscore=$totalscore+$onescore
 }
 
 function two(){
+    twoscore=1
     echo -e "\nValidating Question 2: \n"
-    [[ -f /mnt/hosts ]] && echo -e "2a) ${GREEN}PASSED${NC} (file exists - /mnt/hosts)" || echo -e "2a) ${RED}FAILED${NC} (file does not exists - /mnt/hosts)"
+    [[ -f /mnt/hosts ]] && echo -e "2a) ${GREEN}PASSED${NC} (file exists - /mnt/hosts)" || echo -e "2a) ${RED}FAILED${NC} (file does not exists - /mnt/hosts)"; twoscore=0
     twob=$(find /mnt -name hosts -type f -user root)
-    [[ ! -z $twob ]] && echo -e "2b) ${GREEN}PASSED${NC} (/mnt/hosts owned by root user)" || echo -e "2b) ${RED}FAILED${NC} (/mnt/hosts NOT owned by root user)"
+    [[ ! -z $twob ]] && echo -e "2b) ${GREEN}PASSED${NC} (/mnt/hosts owned by root user)" || echo -e "2b) ${RED}FAILED${NC} (/mnt/hosts NOT owned by root user)"; twoscore=0
     twoc=$(find /mnt -name hosts -type f -group root)
-    [[ ! -z $twoc ]] && echo -e "2c) ${GREEN}PASSED${NC} (/mnt/hosts owned by root group)" || echo -e "2c) ${RED}FAILED${NC} (/mnt/hosts NOT owned by root group)"
+    [[ ! -z $twoc ]] && echo -e "2c) ${GREEN}PASSED${NC} (/mnt/hosts owned by root group)" || echo -e "2c) ${RED}FAILED${NC} (/mnt/hosts NOT owned by root group)"; twoscore=0
     twod=$(stat -L -c "%a" /mnt/hosts)
-    [[ $twod -eq 0 ]] &&  echo -e "2d) ${GREEN}PASSED${NC} (No user can rwx /mnt/hosts)" || echo -e "2d) ${RED}FAILED${NC} (someone can access /mnt/hosts)"
+    [[ $twod -eq 0 ]] &&  echo -e "2d) ${GREEN}PASSED${NC} (No user can rwx /mnt/hosts)" || echo -e "2d) ${RED}FAILED${NC} (someone can access /mnt/hosts)"; twoscore=0
+    totalscore=$totalscore+$twoscore
 }
 
 function three(){
@@ -173,6 +177,21 @@ function nine(){
 
 function ten(){
     echo -e "\nValidating Question 10: \n"
+    [[ -f /opt/result.words ]] && sudo rm -rf /opt/result.words
+    runuser -l rohit -c 'cd /home/rohit/; words.sh' 
+    if [[ $? -eq 0 ]]; then
+        echo -e "10) ${GREEN}PASSED${NC} - words.sh executed successfully from any path"
+        if [[ -f /opt/result.words ]]; then
+            echo "command words.sh created the file /opt/result.words"
+            invalidtencontent="false"
+            chkstr=$(egrep -e "^w|^W"  -v /opt/result.words)
+            [[ -z $chkstr ]] && echo -e "10) ${GREEN}PASSED${NC} /opt/result.words contain only words starts with 'w' and 'W'" || echo -e "10) ${RED}FAILED${NC} /opt/result.words contain only words NOT starting with 'w' and 'W'"
+        else
+            echo "10) ${RED}FAILED${NC} command words.sh created the file /opt/result.words"
+        fi
+    else
+        echo -e "10) ${RED}FAILED${NC} File not exists /opt/words.sh"
+    fi
 }
 
 echo -e "\n*** ${BBlue}OSE LABS - RHCSA Course - Assessment 1 Validation${NC} ***\n"
