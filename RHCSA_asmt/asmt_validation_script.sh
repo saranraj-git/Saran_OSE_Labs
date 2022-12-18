@@ -163,7 +163,7 @@ function nine(){
                         break
                     fi
                 done</tmp/nine
-                [[ ${invalidcontent} == "false" ]] && echo "9) ${GREEN}PASSED${NC} display.sh printing 'Good Learning Linux' 10 times" || echo "9) ${RED}FAILED${NC} display.sh not printing 'Good Learning Linux' 10 times"
+                [[ ${invalidcontent} == "false" ]] && echo -e "9) ${GREEN}PASSED${NC} display.sh printing 'Good Learning Linux' 10 times" || echo -e "9) ${RED}FAILED${NC} display.sh not printing 'Good Learning Linux' 10 times"
             else
                 echo -e "9) ${RED}FAILED${NC} display.sh not printing 'Good Learning Linux' 10 times"  
             fi
