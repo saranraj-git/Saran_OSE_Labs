@@ -34,7 +34,7 @@ function one(){
     [[ $? -eq 0 ]] && echo -e "1e) ${GREEN}PASSED${NC} (hardik password set to Secret123)" || echo -e "1e) ${RED}FAILED${NC} (hardik password set incorrect)"; onescore=0
     hardikshell=$(grep 'hardik' /etc/passwd | cut -d: -f7)
     [[ $hardikshell == *"bash"* ]] && sudo usermod hardik -s /sbin/nologin
-    totalscore=$totalscore+$onescore
+    totalscore=`expr $totalscore + $onescore`
 }
 
 function two(){
@@ -47,35 +47,42 @@ function two(){
     [[ ! -z $twoc ]] && echo -e "2c) ${GREEN}PASSED${NC} (/mnt/hosts owned by root group)" || echo -e "2c) ${RED}FAILED${NC} (/mnt/hosts NOT owned by root group)"; twoscore=0
     twod=$(stat -L -c "%a" /mnt/hosts)
     [[ $twod -eq 0 ]] &&  echo -e "2d) ${GREEN}PASSED${NC} (No user can rwx /mnt/hosts)" || echo -e "2d) ${RED}FAILED${NC} (someone can access /mnt/hosts)"; twoscore=0
-    totalscore=$totalscore+$twoscore
+    totalscore=`expr $totalscore + $twoscore`
 }
 
 function three(){
+    threescore=1
     echo -e "\nValidating Question 3: \n"
-    [[ -d '/open/source' ]] && echo -e "3) ${GREEN}Directory exists${NC} /open/source" || echo -e "3) ${RED}Directory not exists${NC} /open/source"
-    [[ $(sudo stat -L -c "%U" '/open/source') == "jadeja" ]] && echo -e "3a) ${GREEN}PASSED${NC} (/open/source owned by jadeja)" || echo -e "3a) ${RED}FAILED${NC} (/open/source NOT owned by jadeja)"
-    [[ $(sudo stat -L -c "%G" '/open/source') == "cricket" ]] && echo -e "3b) ${GREEN}PASSED${NC} (/open/source owned by group cricket)" || echo -e "3b) ${RED}FAILED${NC} (/open/source NOT owned by group cricket)"
+    [[ -d '/open/source' ]] && echo -e "3) ${GREEN}Directory exists${NC} /open/source" || echo -e "3) ${RED}Directory not exists${NC} /open/source"; threescore=0
+    [[ $(sudo stat -L -c "%U" '/open/source') == "jadeja" ]] && echo -e "3a) ${GREEN}PASSED${NC} (/open/source owned by jadeja)" || echo -e "3a) ${RED}FAILED${NC} (/open/source NOT owned by jadeja)"; threescore=0
+    [[ $(sudo stat -L -c "%G" '/open/source') == "cricket" ]] && echo -e "3b) ${GREEN}PASSED${NC} (/open/source owned by group cricket)" || echo -e "3b) ${RED}FAILED${NC} (/open/source NOT owned by group cricket)"; threescore=0
     if [[ $(sudo stat -L -c "%a" '/open/source') -eq 2070 ]] || [[ $(sudo stat -L -c "%a" '/open/source') -eq 70 ]]; then
         echo -e "3c) ${GREEN}PASSED${NC} (/open/source - accessible only to cricket group members)"
     else
         echo -e "3c) ${RED}FAILED${NC} (/open/source - accessible to users who are not member of cricket group)"
+        threescore=0
     fi
     sudo touch /open/source/threetest
-    [[ $(sudo stat -L -c "%G" '/open/source/threetest') == "cricket" ]] && echo -e "3d) ${GREEN}PASSED${NC} (new files in /open/source owned by group cricket)" || echo -e "3d) ${RED}FAILED${NC} (new files in /open/source NOT owned by group cricket)"
+    [[ $(sudo stat -L -c "%G" '/open/source/threetest') == "cricket" ]] && echo -e "3d) ${GREEN}PASSED${NC} (new files in /open/source owned by group cricket)" || echo -e "3d) ${RED}FAILED${NC} (new files in /open/source NOT owned by group cricket)"; threescore=0
     sudo rm -rf /open/source/threetest
+    totalscore=`expr $totalscore + $threescore`
 }
 
 function four(){
+    fourscore=1
     echo -e "\nValidating Question 4: \n"
-    [[ -f '/root/find.jadeja' ]] && echo -e "${GREEN}/root/find.jadeja exists${NC}" || echo -e "${RED}/root/find.jadeja not exists${NC}"
+    [[ -f '/root/find.jadeja' ]] && echo -e "${GREEN}/root/find.jadeja exists${NC}" || echo -e "${RED}/root/find.jadeja not exists${NC}"; fourscore=0
     if [[ $(sudo stat -L -c "%U" $(sudo cat /root/find.jadeja) | uniq) == "jadeja" ]] && [[  -r '/root/find.jadeja' ]]; then
         echo -e "4) ${GREEN}PASSED${NC} - FILE /root/find.jadeja contains files list owned by jadeja and readable by others" 
     else
         echo -e "4) ${RED}FAILED${NC} - FILE /root/find.jadeja contains file list not owned by jadeja or not readable by others" 
+        fourscore=0
     fi
+    totalscore=`expr $totalscore + $fourscore`
 }
 
 function five(){
+    fivescore=1
     echo -e "\nValidating Question 5: \n"
     # userdefumask=$(su -c 'umask' -l 'userdef')
     # dravidumask=$(su -c 'umask' -l 'dravid')
@@ -84,12 +91,14 @@ function five(){
     [[ -d /home/dravid/dir3 ]] && rm -rf /home/dravid/dir3
     filecheck=$(runuser -l userdef -c 'source /home/userdef/.bash_profile; touch /home/userdef/file2; stat -L -c "%a" /home/userdef/file2')
     dircheck=$(runuser -l dravid -c 'source /home/dravid/.bash_profile; mkdir /home/dravid/dir3; stat -L -c "%a" /home/dravid/dir3')
-    [[ $filecheck -eq 440 ]] && echo -e "5) ${GREEN}PASSED${NC} - newly created file have –r--r----- permissions" || echo -e "5) ${RED}FAILED${NC} - newly created file does not have –r--r----- permissions"
-    [[ $dircheck -eq 550 ]] && echo -e "5) ${GREEN}PASSED${NC} - newly created dir have dr-xr-x--- permissions" || echo -e "5) ${RED}FAILED${NC} - newly created dir does not have dr-xr-x--- permissions"
+    [[ $filecheck -eq 440 ]] && echo -e "5) ${GREEN}PASSED${NC} - newly created file have –r--r----- permissions" || echo -e "5) ${RED}FAILED${NC} - newly created file does not have –r--r----- permissions"; fivescore=0
+    [[ $dircheck -eq 550 ]] && echo -e "5) ${GREEN}PASSED${NC} - newly created dir have dr-xr-x--- permissions" || echo -e "5) ${RED}FAILED${NC} - newly created dir does not have dr-xr-x--- permissions"; fivescore=0
+    totalscore=`expr $totalscore + $fivescore`
     
 }
 
 function six(){
+    sixscore=1
     echo -e "\nValidating Question 6: \n"
     flag="true"
     if [[ -f /root/nologin-files ]]; then
@@ -100,13 +109,16 @@ function six(){
                 break
             fi
         done</root/nologin-files
-        [[ $flag == "true" ]] && echo -e "6) ${GREEN}PASSED${NC} - /root/nologin-files contains only nologin entries" || echo -e "6) ${RED}FAILED${NC} - /root/nologin-files contains entries other than nologin" 
+        [[ $flag == "true" ]] && echo -e "6) ${GREEN}PASSED${NC} - /root/nologin-files contains only nologin entries" || echo -e "6) ${RED}FAILED${NC} - /root/nologin-files contains entries other than nologin" ;sixscore=0
     else
         echo -e "6) ${RED}FAILED${NC} File not exists - /root/nologin-files"  
+        sixscore=0
     fi
+    totalscore=`expr $totalscore + $sixscore`
 }
 
 function seven(){
+    sevenscore=1
     echo -e "\nValidating Question 7: \n"
     sev=$(grep ^"rhcsa" /etc/passwd)
     if [[ ! -z $sev ]]; then 
@@ -115,21 +127,23 @@ function seven(){
         sevb=$(echo $sev | cut -d: -f4)
         sevc=$(echo $sev | cut -d: -f7)
         sevd=$(echo $sev | cut -d: -f5)
-        [[ ${seva} -eq 3030 ]] && echo -e "7a) ${GREEN}PASSED${NC} userid 3030 found for user rhcsa" || echo -e "7a) ${RED}FAILED${NC} userid 3030 NOT found for user rhcsa"
-        [[ ${sevb} -eq 4040 ]] && echo -e "7b) ${GREEN}PASSED${NC} primary groupid 4040 found for user rhcsa" || echo -e "7b) ${RED}FAILED${NC} primary groupid 4040 NOT found for user rhcsa"
-        [[ ${sevc} == "/bin/sh" ]] && echo -e "7c) ${GREEN}PASSED${NC} default shell /bin/sh found for user rhcsa" || echo -e "7c) ${RED}FAILED${NC} default shell /bin/sh NOT found for user rhcsa"
-        [[ ${sevd} == "devops-engineer" ]] && echo -e "7d) ${GREEN}PASSED${NC} user comment 'devops-engineer' found for user rhcsa" || echo -e "7d) ${RED}FAILED${NC} user comment 'devops-engineer' found for user rhcsa"
+        [[ ${seva} -eq 3030 ]] && echo -e "7a) ${GREEN}PASSED${NC} userid 3030 found for user rhcsa" || echo -e "7a) ${RED}FAILED${NC} userid 3030 NOT found for user rhcsa"; sevenscore=0
+        [[ ${sevb} -eq 4040 ]] && echo -e "7b) ${GREEN}PASSED${NC} primary groupid 4040 found for user rhcsa" || echo -e "7b) ${RED}FAILED${NC} primary groupid 4040 NOT found for user rhcsa"; sevenscore=0
+        [[ ${sevc} == "/bin/sh" ]] && echo -e "7c) ${GREEN}PASSED${NC} default shell /bin/sh found for user rhcsa" || echo -e "7c) ${RED}FAILED${NC} default shell /bin/sh NOT found for user rhcsa"; sevenscore=0
+        [[ ${sevd} == "devops-engineer" ]] && echo -e "7d) ${GREEN}PASSED${NC} user comment 'devops-engineer' found for user rhcsa" || echo -e "7d) ${RED}FAILED${NC} user comment 'devops-engineer' found for user rhcsa"; sevenscore=0
     else
         echo -e "7) ${RED}FAILED${NC} rhcsa user does not exists"
+        sevenscore=0
     fi
+    totalscore=`expr $totalscore + $sevenscore`
 }
 
 function eight(){
+    eightscore=1
     echo -e "\nValidating Question 8: \n"
     if [[ -f /tmp/localusers ]]; then
         echo -e "${GREEN}File exists - /tmp/localusers${NC}"
         sudo cat /etc/passwd | egrep -w '/bin/bash|/bin/sh|/bin/csh|/bin/ksh' | cut -d: -f1 > /tmp/validusers
-             
         invaliduser="false"
         while read line; do
             if [[ -z `grep -w $line /tmp/validusers` ]] && [[ ! -z `echo $line | cut -d: -f2` ]]; then
@@ -138,15 +152,17 @@ function eight(){
             fi
         done</tmp/localusers
         
-        [[ $invaliduser == "false" ]] && echo -e "8a) ${GREEN}PASSED${NC} /tmp/localusers contains only valid usernames" || echo -e "8a) ${RED}FAILED${NC} /tmp/localusers contains invalid usernames/format"
+        [[ $invaliduser == "false" ]] && echo -e "8a) ${GREEN}PASSED${NC} /tmp/localusers contains only valid usernames" || echo -e "8a) ${RED}FAILED${NC} /tmp/localusers contains invalid usernames/format"; eightscore=0
         
     else
         echo -e "8) ${RED}FAILED${NC} File NOT exists - /tmp/localusers${NC}"
+        eightscore=0
     fi
-    
+    totalscore=`expr $totalscore + $eightscore`
 }
 
 function nine(){
+    ninescore=1
     echo -e "\nValidating Question 9: \n"
     if [[ -f /root/display.sh ]]; then
         echo -e "${GREEN}File exists /root/display.sh${NC}"
@@ -163,19 +179,24 @@ function nine(){
                         break
                     fi
                 done</tmp/nine
-                [[ ${invalidcontent} == "false" ]] && echo -e "9) ${GREEN}PASSED${NC} display.sh printing 'Good Learning Linux' 10 times" || echo -e "9) ${RED}FAILED${NC} display.sh not printing 'Good Learning Linux' 10 times"
+                [[ ${invalidcontent} == "false" ]] && echo -e "9) ${GREEN}PASSED${NC} display.sh printing 'Good Learning Linux' 10 times" || echo -e "9) ${RED}FAILED${NC} display.sh not printing 'Good Learning Linux' 10 times"; ninescore=0
             else
                 echo -e "9) ${RED}FAILED${NC} display.sh not printing 'Good Learning Linux' 10 times"  
+                ninescore=0
             fi
         else 
             echo -e "9) ${RED}FAILED${NC} display.sh cannot be executed from any path in this machine"
+            ninescore=0
         fi
     else
         echo -e "9) ${RED}FAILED${NC} File NOT exists /root/display.sh${NC}"
+        ninescore=0
     fi
+    totalscore=`expr $totalscore + $ninescore`
 }
 
 function ten(){
+    tenscore=1
     echo -e "\nValidating Question 10: \n"
     [[ -f /opt/result.words ]] && sudo rm -rf /opt/result.words
     runuser -l root -c 'cd /tmp/; words.sh' 
@@ -185,13 +206,16 @@ function ten(){
             echo "command words.sh created the file /opt/result.words"
             invalidtencontent="false"
             chkstr=$(egrep -e "^w|^W"  -v /opt/result.words)
-            [[ -z $chkstr ]] && echo -e "10) ${GREEN}PASSED${NC} /opt/result.words contain only words starts with 'w' and 'W'" || echo -e "10) ${RED}FAILED${NC} /opt/result.words contain only words NOT starting with 'w' and 'W'"
+            [[ -z $chkstr ]] && echo -e "10) ${GREEN}PASSED${NC} /opt/result.words contain only words starts with 'w' and 'W'" || echo -e "10) ${RED}FAILED${NC} /opt/result.words contain only words NOT starting with 'w' and 'W'"; tenscore=0
         else
             echo "10) ${RED}FAILED${NC} command words.sh created the file /opt/result.words"
+            tenscore=0
         fi
     else
         echo -e "10) ${RED}FAILED${NC} File not exists /opt/words.sh"
+        tenscore=0
     fi
+    totalscore=`expr $totalscore + $tenscore`
 }
 
 echo -e "\n*** ${BBlue}OSE LABS - RHCSA Course - Assessment 1 Validation${NC} ***\n"
@@ -205,3 +229,4 @@ seven
 eight
 nine
 ten
+echo -e "Overall Assessment score : ${totalscore} out of 10"
