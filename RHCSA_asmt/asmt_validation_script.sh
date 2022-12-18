@@ -11,6 +11,7 @@ RED='\033[0;31m'
 GREEN='\033[0;32m'
 NC='\033[0m'
 BBlue='\033[1;34m'
+totalscore=0
 # logfile="Assessment_out_$(date +%d-%m-%Y_%H%M%S)"
 
 function one(){
@@ -84,9 +85,104 @@ function five(){
     
 }
 
+function six(){
+    echo -e "\nValidating Question 6: \n"
+    flag="true"
+    if [[ -f /root/nologin-files ]]; then
+        echo -e "${GREEN}File exists${NC} - /root/nologin-files"
+        while read line; do
+            if [[ $line != *"nologin"* ]]; then
+                flag="false"
+                break
+            fi
+        done</root/nologin-files
+        [[ $flag == "true" ]] && echo -e "6) ${GREEN}PASSED${NC} - /root/nologin-files contains only nologin entries" || echo -e "6) ${RED}FAILED${NC} - /root/nologin-files contains entries other than nologin" 
+    else
+        echo -e "6) ${RED}FAILED${NC} File not exists - /root/nologin-files"  
+    fi
+}
+
+function seven(){
+    echo -e "\nValidating Question 7: \n"
+    sev=$(grep ^"rhcsa" /etc/passwd)
+    if [[ ! -z $sev ]]; then 
+        echo -e "${GREEN}rhcsa user exists${NC}" 
+        seva=$(echo $sev | cut -d: -f3)
+        sevb=$(echo $sev | cut -d: -f4)
+        sevc=$(echo $sev | cut -d: -f7)
+        sevd=$(echo $sev | cut -d: -f5)
+        [[ ${seva} -eq 3030 ]] && echo -e "7a) ${GREEN}PASSED${NC} userid 3030 found for user rhcsa" || echo -e "7a) ${RED}FAILED${NC} userid 3030 NOT found for user rhcsa"
+        [[ ${sevb} -eq 4040 ]] && echo -e "7b) ${GREEN}PASSED${NC} primary groupid 4040 found for user rhcsa" || echo -e "7b) ${RED}FAILED${NC} primary groupid 4040 NOT found for user rhcsa"
+        [[ ${sevc} == "/bin/sh" ]] && echo -e "7c) ${GREEN}PASSED${NC} default shell /bin/sh found for user rhcsa" || echo -e "7c) ${RED}FAILED${NC} default shell /bin/sh NOT found for user rhcsa"
+        [[ ${sevd} == "devops-engineer" ]] && echo -e "7d) ${GREEN}PASSED${NC} user comment 'devops-engineer' found for user rhcsa" || echo -e "7d) ${RED}FAILED${NC} user comment 'devops-engineer' found for user rhcsa"
+    else
+        echo -e "7) ${RED}FAILED${NC} rhcsa user does not exists"
+    fi
+}
+
+function eight(){
+    echo -e "\nValidating Question 8: \n"
+    if [[ -f /tmp/localusers ]]; then
+        echo -e "${GREEN}File exists - /tmp/localusers${NC}"
+        sudo cat /etc/passwd | egrep -w '/bin/bash|/bin/sh|/bin/csh|/bin/ksh' | cut -d: -f1 > /tmp/validusers
+             
+        invaliduser="false"
+        while read line; do
+            if [[ -z `grep -w $line /tmp/validusers` ]] && [[ ! -z `echo $line | cut -d: -f2` ]]; then
+                invaliduser="true"
+                break
+            fi
+        done</tmp/localusers
+        
+        [[ $invaliduser == "false" ]] && echo -e "8a) ${GREEN}PASSED${NC} /tmp/localusers contains only valid usernames" || echo -e "8a) ${RED}FAILED${NC} /tmp/localusers contains invalid usernames/format"
+        
+    else
+        echo -e "8) ${RED}FAILED${NC} File NOT exists - /tmp/localusers${NC}"
+    fi
+    
+}
+
+function nine(){
+    echo -e "\nValidating Question 9: \n"
+    if [[ -f /root/display.sh ]]; then
+        echo -e "${GREEN}File exists /root/display.sh${NC}"
+        runuser -l root -c 'cd /; display.sh'
+        if [[ $? -eq 0 ]]; then
+            echo -e "9) ${GREEN}PASSED${NC} display.sh can be executed from any path in this machine" 
+            invalidcontent="false"
+            display.sh > /tmp/nine
+            if [[ $(cat /tmp/nine | wc -l) -eq 10 ]]; then
+                echo "9) ${GREEN}PASSED${NC} display.sh prints exactly 10 lines"
+                while read line; do
+                    if [[ $line != "Good Learning Linux" ]]; then
+                        invalidcontent="true"
+                        break
+                    fi
+                done</tmp/nine
+                [[ ${invalidcontent} == "false" ]] && echo "9) ${GREEN}PASSED${NC} display.sh printing 'Good Learning Linux' 10 times" || echo "9) ${RED}FAILED${NC} display.sh not printing 'Good Learning Linux' 10 times"
+            else
+                echo "9) ${RED}FAILED${NC} display.sh not printing 'Good Learning Linux' 10 times"  
+            fi
+        else 
+            echo -e "9) ${RED}FAILED${NC} display.sh cannot be executed from any path in this machine"
+        fi
+    else
+        echo -e "9) ${RED}FAILED${NC} File NOT exists /root/display.sh${NC}"
+    fi
+}
+
+function ten(){
+    echo -e "\nValidating Question 10: \n"
+}
+
 echo -e "\n*** ${BBlue}OSE LABS - RHCSA Course - Assessment 1 Validation${NC} ***\n"
 one
 two
 three
 four
 five
+six
+seven
+eight
+nine
+ten
