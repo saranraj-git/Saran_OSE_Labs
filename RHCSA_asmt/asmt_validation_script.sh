@@ -23,7 +23,7 @@ function one(){
     [[ ! -z ${onea} ]] && [[ ${onea} == *"cricket"* ]] && echo -e "1a) ${GREEN}PASSED${NC} (cricket group exists)" || echo -e "1a) ${RED}FAILED${NC} (cricket group does not exists)"; onescore=0
     [[ ! -z ${onebc} ]] && [[ ${onea} == *"rohit"* ]] && echo -e "1b) ${GREEN}PASSED${NC} (User rohit belongs to the secondary group cricket)" || echo -e "1b) ${RED}FAILED${NC} (User rohit does not belongs to the secondary group cricket)"; onescore=0
     [[ ! -z ${onebc} ]] && [[ ${onea} == *"kohli"* ]] && echo -e "1c) ${GREEN}PASSED${NC} (User kohli belongs to the secondary group cricket)" || echo -e "1c) ${RED}FAILED${NC} (User kohli does not belongs to the secondary group cricket)"; onescore=0
-    [[ ! -z ${oned} ]] && [[ ${oned} == *"nologin"* ]] && [[ ${onea} != *"hardik"* ]] && echo -e "1d) ${GREEN}PASSED${NC} (User hardik does not interactive shell access and non-member of cricket group)" || echo "1d) ${RED}FAILED${NC} (User hardik does not exists or the user does have shell acces or user might be member of cricket)"; onescore=0
+    [[ ! -z ${oned} ]] && [[ ${oned} == *"nologin"* ]] && [[ ${onea} != *"hardik"* ]] && echo -e "1d) ${GREEN}PASSED${NC} (User hardik does not interactive shell access and non-member of cricket group)" || echo -e "1d) ${RED}FAILED${NC} (User hardik does not exists or the user does have shell acces or user might be member of cricket)"; onescore=0
     echo "Secret123" | /bin/su --command true - "rohit" 2>/dev/null
     [[ $? -eq 0 ]] && echo -e "1e) ${GREEN}PASSED${NC} (rohit password set to Secret123)" || echo -e "1e) ${RED}FAILED${NC} (rohit password set incorrect)"; onescore=0
     echo "Secret123" | /bin/su --command true - "kohli" 2>/dev/null
