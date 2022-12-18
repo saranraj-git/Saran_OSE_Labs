@@ -67,6 +67,7 @@ chmod +x /root/display.sh
 ln -s /root/display.sh /bin/display.sh
 
 # 10
+sudo chmod -R 777 /opt/
 sudo echo "sudo egrep -e '^w|^W' /usr/share/dict/linux.words > /opt/result.words" > /bin/words.sh
 sudo chmod +x /bin/words.sh
 
