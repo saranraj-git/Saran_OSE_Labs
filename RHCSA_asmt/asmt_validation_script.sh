@@ -208,7 +208,7 @@ function ten(){
             chkstr=$(egrep -e "^w|^W"  -v /opt/result.words)
             [[ -z $chkstr ]] && echo -e "10) ${GREEN}PASSED${NC} /opt/result.words contain only words starts with 'w' and 'W'" || echo -e "10) ${RED}FAILED${NC} /opt/result.words contain only words NOT starting with 'w' and 'W'"; tenscore=0
         else
-            echo "10) ${RED}FAILED${NC} command words.sh created the file /opt/result.words"
+            echo -e "10) ${RED}FAILED${NC} command words.sh created the file /opt/result.words"
             tenscore=0
         fi
     else
