@@ -229,4 +229,3 @@ seven
 eight
 nine
 ten
-echo -e "Overall Assessment score : ${totalscore} out of 10"
