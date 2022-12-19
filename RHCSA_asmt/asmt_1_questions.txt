@@ -1,5 +1,5 @@
-Linux-Assessment-1:OSELabs:Duration=1hour:Date=08Oct:10am-11am IST:
-===================================================================
+Linux-Assessment-1:OSELabs:Duration=1hour:
+==========================================
 
 1.Create the following users, groups and group memberships:
 a) A group named cricket. 
