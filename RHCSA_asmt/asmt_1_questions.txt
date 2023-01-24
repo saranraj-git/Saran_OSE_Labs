@@ -30,7 +30,7 @@ could able to see the contents.
 5. Configure default permissions for user:
 Note: Create user if not available
 a) All new creating files for user userdef as –r--r----- as default permission
-b) All new creating directories for user userdef as dr-xr-x--- as default permission
+b) All new creating directories for user dravid as dr-xr-x--- as default permission
 
 6. Filter the string "nologin" on the file /etc/passwd and redirect to a file named /root/nologin-files
 
