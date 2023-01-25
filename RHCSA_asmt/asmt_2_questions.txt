@@ -1,0 +1,57 @@
+1. Assign Hostname and IP address for your virtual machine. 
+IP Address 192.168.250.10
+Netmask 255.255.255.0
+Gateway 192.168.250.254
+Nameserver 192.168.250.254
+
+
+2. Configure and enable the following yum repository to your server
+
+Training-BaseOS
+http://mycontent.training.com/rhel9.0/x86_64/dvd/BaseOS 
+
+Training-AppStream
+http://mycontent.training.com/rhel9.0/x86_64/dvd/AppStream 
+
+
+3. Configure the Selinux in the servera,
+a) Apache running in the port number 82  
+c) /var/www/html dir must have the index.html file accessible to the apache server 
+d) Apache service should run when the server boot
+
+4. Configure autofs to auto mount the home directories of remote users Note the following : 
+
+a) servera NFS server - exports /rhome to yoursystem, 
+b) remote user’s home directory should be auto mounted locally beneath /home as /rhome 
+
+5. Set a Cron job for the user harry, execute the command /bin/echo on "HELLO HOW ARE YOU" at 12.30 at noon everyday
+
+6. Configure the NTP server to your linux machine
+a) Configure your system so that it is an NTP client of classroom.example.com
+
+7.  Create the following archive files 
+a) Create backup of /etc as /root/etc.tar.gz 
+b) Create backup of /etc as /root/etc.tar.bz2 
+
+8. Build a container as user student 
+Build a container image using http://content.example.com/mock/Containerfile as a student user. 
+Container image name should be monitor. 
+Do not modify the Containerfile 
+
+9. Configure the container as a system start-up service and mount volumes persistently
+
+10. Configure password and sudo privileges as given below. 
+a) Set the Password expire date for all new users in serverb.lab.example.com should expires after 20 days. 
+b) Assign the Sudo Privilege for Group "sysmgrp" and Group members can administrate without any password
+c) Change the root password as 'Welcome2023'
+
+11. Configure the application RHCSA as on node1 
+a) when the user student logged in, then it must print the message "This is RHCSA exam"
+
+12. Configure disk partitioning as follows:
+a) Create a swap partition with 800MiB, must be enabled automatically during every reboot
+b) Create a Logical volume with volume group name as qa and lvm name as qagroup (Note: The physical extends should be 16mib And the logical volume should be 50 extends )
+c) mount the volume group to /lvmsample Directory. It should be a vfat filesystem.
+d) Resize your existing logical volume mylv-ose to 230MiB
+
+13) recommend tuned profile for your system
